@@ -32,14 +32,27 @@ public class TransactionController {
         Compte compte = compteRepository.findById(transactionRequest.getCompteId())
                 .orElseThrow(() -> new RuntimeException("Compte not Found"));
 
+        // Adjust account balance
+        if (transactionRequest.getType() == TypeTransaction.DEPOT) {
+            compte.setSolde(compte.getSolde() + transactionRequest.getMontant());
+        } else if (transactionRequest.getType() == TypeTransaction.RETRAIT) {
+            if (compte.getSolde() < transactionRequest.getMontant()) {
+                throw new RuntimeException("Insufficient funds for withdrawal");
+            }
+            compte.setSolde(compte.getSolde() - transactionRequest.getMontant());
+        } else {
+            throw new RuntimeException("Invalid transaction type");
+        }
+
+        compteRepository.save(compte);
+
         Transaction transaction = new Transaction();
         transaction.setMontant(transactionRequest.getMontant());
         transaction.setDate(new Date());
         transaction.setType(transactionRequest.getType());
         transaction.setCompte(compte);
 
-        transactionRepository.save(transaction);
-        return transaction;
+        return transactionRepository.save(transaction);
     }
 
     @QueryMapping

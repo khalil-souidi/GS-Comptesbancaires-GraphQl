@@ -61,9 +61,9 @@ public class CompteController {
 
     @QueryMapping
     public Map<String, Object> totalSolde() {
-        long count = compteRepository.count(); // Total number of accounts
-        double sum = compteRepository.sumSoldes(); // Sum of all balances
-        double average = count > 0 ? sum / count : 0; // Average balance
+        long count = compteRepository.count();
+        double sum = compteRepository.sumSoldes();
+        double average = count > 0 ? sum / count : 0;
 
         return Map.of(
                 "count", count,

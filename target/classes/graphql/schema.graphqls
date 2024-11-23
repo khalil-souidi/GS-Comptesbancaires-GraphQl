@@ -35,13 +35,13 @@ type Transaction {
     montant: Float
     date: String
     type: TypeTransaction
-    compte: Compte                      # The account associated with this transaction
+    compte: Compte
 }
 
 # Mutation definitions
 type Mutation {
-    saveCompte(compte: CompteRequest): Compte    # Create or update an account
-    addTransaction(transaction: TransactionRequest): Transaction # Add a new transaction
+    saveCompte(compte: CompteRequest): Compte
+    addTransaction(transaction: TransactionRequest): Transaction
 }
 
 # Input definitions
@@ -53,7 +53,6 @@ input CompteRequest {
 
 input TransactionRequest {
     montant: Float
-    date: String
     compteId: ID
     type: TypeTransaction
 }
